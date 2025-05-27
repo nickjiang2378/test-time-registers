@@ -1,3 +1,3 @@
-# Vision Transformers Don't Need Trained Registers
+## Vision Transformers Don't Need Trained Registers
 
 TODO

@@ -1,5 +1,8 @@
-from utils.hook_manager import HookManager
+from ..shared.hook_manager import HookManager
 
 class ClipHookManager(HookManager):
-  def __init__(self):
-    super().__init__()
+  def reinit(self):
+    pass
+
+  def finalize(self):
+    pass

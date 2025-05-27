@@ -18,11 +18,11 @@ class HookManager(ABC):
     self.neuron_activations = []
 
   @abstractmethod
-  def reinit_hooks(self):
+  def reinit(self):
     pass
 
   @abstractmethod
-  def finalize_hooks():
+  def finalize(self):
     pass
 
   def get_attention_maps(self):
