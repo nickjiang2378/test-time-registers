@@ -300,6 +300,7 @@ class MultiheadAttention(nn.Module):
             self.bias_k = self.bias_v = None
 
         self.add_zero_attn = add_zero_attn
+        self.post_softmax_identity = nn.Identity()
 
     def forward_direct(self, x, attn_mask=None):
         B, N, C = x.shape
@@ -322,6 +323,7 @@ class MultiheadAttention(nn.Module):
             attn += attn_mask
         attn = self.hook("post_mask", ret=attn)
         attn = attn.softmax(dim=-1)
+        attn = self.post_softmax_identity(attn)
         attn = self.hook("post_softmax", ret=attn)
         x = attn @ v
 
@@ -407,6 +409,7 @@ class MultiheadAttention(nn.Module):
             attn += attn_mask
         attn = self.hook("attention.post_mask", ret=attn)
         attn = attn.softmax(dim=-1)
+        attn = self.post_softmax_identity(attn)
         attn = self.hook("attention.post_softmax", ret=attn)  # [B, H, N, N]
         x = torch.einsum("bhnm,bhmc->bhnmc", attn, v)
         x = self.hook("extended_attn_v", ret=x)
@@ -447,6 +450,7 @@ class MultiheadAttention(nn.Module):
             attn += attn_mask
         attn = self.hook("attention.post_mask", ret=attn)
         attn = attn.softmax(dim=-1)
+        attn = self.post_softmax_identity(attn)
         attn = self.hook("attention.post_softmax", ret=attn)  # [B, H, N, N]
         x = torch.einsum(
             "bhnm,bhmc->bnmhc", attn, v
@@ -512,6 +516,7 @@ class MultiheadAttention(nn.Module):
             attn += attn_mask
         attn = self.hook("attention.post_mask", ret=attn)
         attn = attn.softmax(dim=-1)
+        attn = self.post_softmax_identity(attn)
         attn = self.hook("attention.post_softmax", ret=attn)  # [B, H, N, N]
         x = torch.einsum(
             "bhnm,bhmc->bnmhc", attn, v

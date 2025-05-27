@@ -1,3 +1,3 @@
 ## Vision Transformers Don't Need Trained Registers
 
-TODO
+![Teaser Figure](plots/Teaser.png)
