@@ -1,4 +1,4 @@
-name: vit_register_neurons2
+name: vit_register_neurons
 channels:
   - pytorch
   - conda-forge

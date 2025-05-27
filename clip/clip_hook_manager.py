@@ -1,4 +1,4 @@
-from ..shared.hook_manager import HookManager
+from shared.hook_manager import HookManager # Need to add shared to sys path for this import to work
 
 class ClipHookManager(HookManager):
   def reinit(self):

@@ -1,4 +1,4 @@
-# from clip_hook_manager import ClipHookManager
+from clip_hook_manager import ClipHookManager
 from clip.factory import create_model_and_transforms, get_tokenizer
 import torch
 
@@ -32,6 +32,7 @@ def load_clip_state(config):
     preprocess=preprocess,
     num_heads=num_heads,
     num_layers=num_layers,
+    patch_size=model.visual.transformer.resblocks[0].attn.patch_size, # TODO
     run_model=run_model,
     # hook_manager=hook_manager,
   )
