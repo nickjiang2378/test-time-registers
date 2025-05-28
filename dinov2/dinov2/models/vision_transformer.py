@@ -216,17 +216,25 @@ class DinoVisionTransformer(nn.Module):
         if masks is not None:
             x = torch.where(masks.unsqueeze(-1), self.mask_token.to(x.dtype).unsqueeze(0), x)
 
+        #########################################################################################
+        #                               START OF CUSTOM CODE                                    #
+        #########################################################################################
         # Edit register tokens
         register_tokens = torch.zeros((B, self.num_register_tokens, x.shape[-1])).to(x.device)
         if self.num_register_tokens > 0:
             num_register_tokens = register_tokens.shape[1]
             for i in range(num_register_tokens):
                 register_tokens[:, i, :] = x.mean(dim=1)
-                # pass
+        #########################################################################################
+        #                                END OF CUSTOM CODE                                     #
+        #########################################################################################
 
         x = torch.cat((self.cls_token.expand(x.shape[0], -1, -1), x), dim=1)
         x = x + self.interpolate_pos_encoding(x, w, h)
 
+        #########################################################################################
+        #                               START OF CUSTOM CODE                                    #
+        #########################################################################################
         if self.num_register_tokens > 0:
             x = torch.cat(
                 (
@@ -235,6 +243,9 @@ class DinoVisionTransformer(nn.Module):
                 ),
                 dim=1,
             )
+        #########################################################################################
+        #                                END OF CUSTOM CODE                                     #
+        #########################################################################################
         return x
 
     def forward_features_list(self, x_list, masks_list):
