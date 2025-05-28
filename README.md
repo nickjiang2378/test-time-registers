@@ -6,6 +6,8 @@
 
 ![Teaser Figure](plots/Teaser.png)
 
+**Controlling high-norm tokens in Vision Transformers.** As shown in Darcet et al. (2024), high-norm outlier tokens emerge in ViTs and lead to noisy attention maps (“Original”). By identifying the mechanism responsible for their emergence, we demonstrate that we can shift them to arbitrary positions at test time (“Shifted”). Shifting the outlier tokens outside of the image area mimics register behavior at test-time (“w/ Test-time Register”), resulting in more interpretable attention patterns and downstream performance comparable to models retrained with registers.
+
 ## Setup
 
 ### Repo
@@ -34,6 +36,8 @@ vit-register-neurons
     ├── hook_manager.py
     └── hook_fn.py
 ```
+Here are the most important files in this repo:
+
 `hook_manager.py`: manages all hooks (interventions, logging) registered for the model. `CLIPHookManager` and `Dinov2HookManager` are both subclasses.
 
 `hook_fn.py`: contains the hook functions for intervening on register neurons and logging model internals for analysis
