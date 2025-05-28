@@ -1,3 +1,67 @@
-## Vision Transformers Don't Need Trained Registers
+# Vision Transformers Don't Need Trained Registers
+
+[Nick Jiang](nickjiang.me), [Amil Dravid](https://avdravid.github.io/), [Alexei Efros](https://people.eecs.berkeley.edu/~efros/), [Yossi Gandelsman](https://yossigandelsman.github.io/)
+
+[Paper]() | [Project Page]()
 
 ![Teaser Figure](plots/Teaser.png)
+
+## Setup
+
+### Repo
+```
+git clone git@github.com:nickjiang2378/vit-register-neurons.git
+cd vit-register-neurons
+```
+
+### Environment
+
+```
+conda env create -f environment.yml
+```
+
+## Repo Overview
+```
+vit-register-neurons
+├── clip
+│   ├── clip_hook_manager.py
+│   └── clip_state.py
+├── dinov2
+│   ├── dinov2_hook_manager.py
+│   └── dinov2_state.py
+└── shared
+    ├── algorithms.py
+    ├── hook_manager.py
+    └── hook_fn.py
+```
+`hook_manager.py`: manages all hooks (interventions, logging) registered for the model. `CLIPHookManager` and `Dinov2HookManager` are both subclasses.
+
+`hook_fn.py`: contains the hook functions for intervening on register neurons and logging model internals for analysis
+
+`algorithms.py`: contains algorithm for detecting register neurons
+
+`clip_state.py` / `dinov2_state.py`: loads model, instantiates hook manager, and passes important metadata like number of layers
+
+## Usage
+
+See `register_neurons.ipynb` to automatically find register neurons and analyze the effects of intervening upon them with test-time registers.
+
+### ImageNet
+
+Many sections rely on access to a corpus of images for use in analysis; our paper uses [ImageNet 2012](https://www.image-net.org/challenges/LSVRC/index.php). You can also create a folder of custom images, but the folder should only consist of images (ie. JPEGs). Once collected or downloaded, pass the folder path to the `IMAGENET_PATH` variable in the notebook.
+
+### Adding New Models
+
+To study ViTs beyond CLIP and DINOv2, we recommend creating a new environment to avoid dependency conflicts with DINOv2 and CLIP. Our method primarily requires a modern version of Pytorch (see `shared/requirements.txt`). Copy the new model's code into this repo (similar to what's done with CLIP and DINOv2), and create two additional files in the new model's folder:
+1. `custom_hook_manager.py`: initialize a subclass of the `HookManager` class in `shared/hook_manager.py` and fill out the abstract methods, which tell us how to hook into important model components like the MLP, attention heads, etc. See `dinov2/dinov2_hook_manager.py` for an example.
+2. `custom_state.py`: create a `load_model_state` function that loads in a model based on a config (to specify size, etc.), instantiates the hook manager, and returns metadata like number of layers. See `dinov2/dinov2_state.py` for an example.
+
+Lastly, you should modify the model code to enable adding in extra tokens initialized to the mean of the image patches. This is necessary for creating our "test-time" registers to shift outliers from the image to. In CLIP, we pass in the number of registers during the forward pass. In DINOv2, we set this number as an attribute of the model class. See their respective folders for more details.
+
+
+## TODO
+
+Support swiglu_ffn.
+Add skeleton for custom model
+Test whether independent model environemnts work in the notebook.
+Add shared/requirements.txt file

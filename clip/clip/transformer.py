@@ -795,27 +795,18 @@ class VisionTransformer(nn.Module):
             ],
             dim=1,
         )  # shape = [*, grid ** 2 + 1, width]
-        # extra_token_embeddings = []
-        # total_patches = x.shape[1] - 1
-        # for i in range(extra_tokens):
-        #     # extra_token = self.scale * torch.randn(self.width)
-        #     extra_token = x[:, (total_patches // extra_tokens) * i + 1: (total_patches // extra_tokens) * (i + 1) + 1, :].mean(dim=1)
-        #     extra_token_embeddings.append(extra_token.to(x.dtype).to(x.device)
-        #         + torch.zeros(
-        #             x.shape[0], 1, x.shape[-1], dtype=x.dtype, device=x.device
-        #         ),
-        #     )
 
         x = self.hook(
             "positional_embedding.post", ret=x + self.positional_embedding.to(x.dtype)
         )
 
+        #########################################################################################
+        #                               START OF CUSTOM CODE                                    #
+        #########################################################################################
         extra_token_embeddings = []
-        total_patches = x.shape[1] - 1
         for i in range(extra_tokens):
-            # extra_token = self.scale * torch.randn(self.width)
-            extra_token = x[:, (total_patches // extra_tokens) * i + 1: (total_patches // extra_tokens) * (i + 1) + 1, :].mean(dim=1)
-            # extra_token = self.class_embedding.to(x.dtype).to(x.device)
+            extra_token = x.mean(dim = 1)
+            # extra_token = x[:, (total_patches // extra_tokens) * i + 1: (total_patches // extra_tokens) * (i + 1) + 1, :].mean(dim=1)
             extra_token_embeddings.append(extra_token.to(x.dtype).to(x.device)
                 + torch.zeros(
                     x.shape[0], 1, x.shape[-1], dtype=x.dtype, device=x.device
@@ -824,13 +815,14 @@ class VisionTransformer(nn.Module):
         # Add extra tokens
         if extra_tokens > 0:
             x = torch.cat([x, *extra_token_embeddings], dim=1)
+        #########################################################################################
+        #                                END OF CUSTOM CODE                                     #
+        #########################################################################################
 
         # a patch_dropout of 0. would mean it is disabled and this function would do nothing but return what was passed in
         x = self.hook("patch_dropout.post", ret=self.patch_dropout(x))
         x = self.hook("ln_pre_post", ret=self.ln_pre(x))
-        # x = x.permute(1, 0, 2)  # NLD -> LND
         x = self.transformer(x, attn_method=attn_method)
-        # x = x.permute(1, 0, 2)  # LND -> NLD
         if self.attn_pool is not None:
             x = self.hook("attn_pool.post", ret=self.attn_pool(x))
             x = self.hook("ln_post_post", ret=self.ln_post(x))
