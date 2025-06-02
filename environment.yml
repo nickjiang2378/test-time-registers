@@ -226,4 +226,3 @@ dependencies:
       - xformers==0.0.18
       - yacs==0.1.8
       - zict==3.0.0
-prefix: /home/nickj/miniconda3/envs/vit_register_neurons2

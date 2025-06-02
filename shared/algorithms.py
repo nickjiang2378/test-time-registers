@@ -48,33 +48,21 @@ def find_register_neurons(
       continue
 
     image_count += 1
-
-    # Process all layers vectorized
     for layer in range(num_layers):
-      if apply_sparsity_filter:
-        # Get activations for all neurons in this layer
-        act_layer = baseline_neuron_acts[layer]  # Shape: [seq_len, num_neurons]
+        act_layer = baseline_neuron_acts[layer]  # [seq_len, num_neurons]
+        register_values = act_layer[register_locations]  # [num_register_locations, num_neurons]
 
-        # Check sparsity condition for all neurons at once
-        sparse_neurons = torch.sum(act_layer < sparsity_activation_threshold, dim=0) >= sparsity_frac_threshold * act_layer.shape[0]  # Shape: [num_neurons]
+        if apply_sparsity_filter:
+            # Calculate which neurons are sparse
+            sparse_neurons = torch.sum(act_layer < sparsity_activation_threshold, dim=0) >= sparsity_frac_threshold * act_layer.shape[0]
+            if not torch.any(sparse_neurons):
+                continue
 
-        # Skip computation if no neurons meet the condition
-        if not torch.any(sparse_neurons):
-          continue
-
-      # Get values at register locations for all neurons simultaneously
-      # This creates a tensor of shape [num_register_locations, num_neurons]
-      register_values = act_layer[register_locations]
-
-      # For neurons that pass sparsity condition, compute mean at register locations
-      # First, compute mean for all neurons (this is fast)
-      neuron_means = register_values.mean(dim=0)  # Shape: [num_neurons]
-
-      # Then zero out means for neurons that don't pass sparsity condition
-      neuron_means = neuron_means * sparse_neurons.float()
-
-      # Store in score tensor
-      neuron_scores[i, layer] = neuron_means
+            # Apply sparsity filter to means
+            neuron_scores[i, layer] = register_values.mean(dim=0) * sparse_neurons.float()
+        else:
+            # Store mean activation at register locations
+            neuron_scores[i, layer] = register_values.mean(dim=0)
 
   assert image_count > 0, "No images processed: either lower the register norm threshold or increase the number of processed images"
 

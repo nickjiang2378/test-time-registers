@@ -1,6 +1,0 @@
-pretrained: laion2b_s32b_b82k
-model_name: ViT-L-14
-device: cuda:0
-highest_layer: 14
-detect_outliers_layer: -2
-register_norm_threshold: 150
