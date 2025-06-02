@@ -1,0 +1,6 @@
+model_name: ViT-B-16
+pretrained: laion2b_s34b_b88k
+device: cuda:0
+highest_layer: 5
+detect_outliers_layer: -1
+register_norm_threshold: 30

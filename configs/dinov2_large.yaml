@@ -1,0 +1,6 @@
+backbone_size: large
+device: cuda:0
+detect_outliers_layer: -2
+register_norm_threshold: 150
+highest_layer: 17
+
