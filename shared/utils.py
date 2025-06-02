@@ -103,3 +103,6 @@ def plot_attn_maps(attn_maps):
   # Adjust layout to make room for the colorbars
   plt.tight_layout()
   return plt
+
+def filter_highest_layer(register_norms, highest_layer):
+  return [norm for norm in register_norms if norm[0] <= highest_layer]

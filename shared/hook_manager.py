@@ -1,6 +1,6 @@
 from abc import ABC, abstractmethod
 import numpy as np
-from .hook_fn import activate_on_registers, log_internal
+from .hook_fn import activate_on_registers, log_internal, apply_func_on_internal
 from functools import partial
 
 class HookManager(ABC):
@@ -14,9 +14,13 @@ class HookManager(ABC):
       "log_neuron_activations": [],
       "log_attention_maps": [],
       "intervene_register_neurons": [],
+      "intervene_layer_outputs": [],
+      "intervene_attn_pre_softmax": [],
     }
 
     self.register_neurons_intervention = None
+    self.layer_output_intervention = None
+    self.attn_pre_softmax_intervention = None
 
     # Logs of internal model data
     self.logs = {
@@ -40,6 +44,12 @@ class HookManager(ABC):
   @abstractmethod
   def num_layers(self):
     pass
+
+  """
+  Optional: override this method to get / intervene upon attention maps before softmax
+  """
+  def attn_pre_softmax_component(self, layer):
+    return None
 
   def initialize_log_hooks(self):
     for layer in range(self.num_layers()):
@@ -65,6 +75,8 @@ class HookManager(ABC):
 
     # Clear all intervention data
     self.register_neurons_intervention = None
+    self.layer_output_intervention = None
+    self.attn_pre_softmax_intervention = None
 
   def finalize(self):
     # Initialize intervention hooks
@@ -82,6 +94,17 @@ class HookManager(ABC):
 
         intervene_register_neurons_hook = self.neuron_activation_component(layer).register_forward_hook(intervene_register_neurons_fn)
         self.hooks["intervene_register_neurons"].append(intervene_register_neurons_hook)
+    if self.debug:
+      if self.layer_output_intervention is not None:
+        for i, layer in enumerate(self.layer_output_intervention["layers"]):
+          intervene_layer_output_fn = partial(apply_func_on_internal, func = self.layer_output_intervention["func"][i])
+          intervene_layer_output_hook = self.layer_output_component(layer).register_forward_hook(intervene_layer_output_fn)
+          self.hooks["intervene_layer_outputs"].append(intervene_layer_output_hook)
+      if self.attn_pre_softmax_intervention is not None and self.attn_pre_softmax_component(0) is not None:
+        for i, layer in enumerate(self.attn_pre_softmax_intervention["layers"]):
+          intervene_attn_pre_softmax_fn = partial(apply_func_on_internal, func = self.attn_pre_softmax_intervention["func"][i])
+          intervene_attn_pre_softmax_hook = self.attn_pre_softmax_component(layer).register_forward_hook(intervene_attn_pre_softmax_fn)
+          self.hooks["intervene_attn_pre_softmax"].append(intervene_attn_pre_softmax_hook)
 
     # Initialize log hooks
     if self.debug:
@@ -131,3 +154,15 @@ class HookManager(ABC):
       "bottom_frac": bottom_frac,
     }
 
+  def intervene_attn_pre_softmax(self, layers, funcs):
+    assert self.attn_pre_softmax_component(0) is not None, "Attn pre softmax component is not defined"
+    self.attn_pre_softmax_intervention = {
+      "layers": layers,
+      "func": funcs,
+    }
+
+  def intervene_layer_output(self, layers, funcs):
+    self.layer_output_intervention = {
+      "layers": layers,
+      "func": funcs,
+    }

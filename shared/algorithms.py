@@ -6,10 +6,12 @@ def find_register_neurons(
   model_state,
   image_path,
   register_norm_threshold: float = 30,
-  highest_layer: int = -1,
   detect_outliers_layer: int = -1,
   device: str = "cuda:0",
-  processed_image_cnt: int = 500
+  processed_image_cnt: int = 500,
+  apply_sparsity_filter: bool = False,
+  sparsity_frac_threshold: float = 0.5,
+  sparsity_activation_threshold: float = 0.5,
 ):
   model = model_state["model"]
   preprocess = model_state["preprocess"]
@@ -17,7 +19,6 @@ def find_register_neurons(
   hook_manager = model_state["hook_manager"]
 
   num_layers = model_state["num_layers"]
-  highest_layer = num_layers - 1 if highest_layer == -1 else highest_layer
   num_neurons = model_state["num_neurons_per_layer"]
   random_images = load_images(image_path, count=processed_image_cnt)
   neuron_scores = torch.zeros((len(random_images), num_layers, num_neurons), device=device)
@@ -50,15 +51,16 @@ def find_register_neurons(
 
     # Process all layers vectorized
     for layer in range(num_layers):
-      # Get absolute activations for all neurons in this layer
-      act_layer = torch.abs(baseline_neuron_acts[layer])  # Shape: [seq_len, num_neurons]
+      if apply_sparsity_filter:
+        # Get activations for all neurons in this layer
+        act_layer = baseline_neuron_acts[layer]  # Shape: [seq_len, num_neurons]
 
-      # Check sparsity condition for all neurons at once
-      sparse_neurons = torch.sum(act_layer < 0.5, dim=0) >= 0.5 * act_layer.shape[0]  # Shape: [num_neurons]
+        # Check sparsity condition for all neurons at once
+        sparse_neurons = torch.sum(act_layer < sparsity_activation_threshold, dim=0) >= sparsity_frac_threshold * act_layer.shape[0]  # Shape: [num_neurons]
 
-      # Skip computation if no neurons meet the condition
-      if not torch.any(sparse_neurons):
-        continue
+        # Skip computation if no neurons meet the condition
+        if not torch.any(sparse_neurons):
+          continue
 
       # Get values at register locations for all neurons simultaneously
       # This creates a tensor of shape [num_register_locations, num_neurons]
@@ -89,7 +91,6 @@ def find_register_neurons(
   register_norms = [
     (layer, neuron, sorted_values[i].item())
     for i, (layer, neuron) in enumerate(top_indices)
-    if layer <= highest_layer
   ]
 
   return register_norms

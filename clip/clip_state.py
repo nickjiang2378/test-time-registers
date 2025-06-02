@@ -2,12 +2,27 @@ from clip_hook_manager import ClipHookManager
 from clip.factory import create_model_and_transforms, get_tokenizer
 import torch
 
-def run_model(model, image, num_registers = 0):
-  with torch.no_grad():
-    representation = model.encode_image(
-      image, attn_method="direct", normalize=False, extra_tokens = num_registers
-    )
+def run_model(model, image, num_registers = None):
+  if num_registers is not None:
+    with torch.no_grad():
+      representation = model.encode_image(
+        image, attn_method="direct", normalize=False, extra_tokens = num_registers
+      )
+  else:
+    with torch.no_grad():
+      representation = model.encode_image(
+        image, attn_method="direct", normalize=False
+      )
   return representation
+
+def get_num_neurons_per_mlp(model):
+  return model.visual.transformer.resblocks[0].mlp.c_fc.out_features
+
+def get_num_layers(model):
+  return len(model.visual.transformer.resblocks)
+
+def get_num_heads(model):
+  return model.visual.transformer.resblocks[0].attn.num_heads
 
 def load_clip_state(config):
   model_name = config["model_name"]
@@ -20,9 +35,9 @@ def load_clip_state(config):
   )
   model.to(device)
   model.eval()
-  num_heads = model.visual.transformer.resblocks[0].attn.num_heads
-  num_layers = len(model.visual.transformer.resblocks)
-  num_neurons_per_layer = model.visual.transformer.resblocks[0].mlp.c_fc.out_features
+  num_heads = get_num_heads(model)
+  num_layers = get_num_layers(model)
+  num_neurons_per_layer = get_num_neurons_per_mlp(model)
 
   hook_manager = ClipHookManager(model)
 

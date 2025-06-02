@@ -18,7 +18,8 @@ from torch import nn
 logger = logging.getLogger("dinov2")
 
 
-XFORMERS_ENABLED = os.environ.get("XFORMERS_DISABLED") is None
+# XFORMERS_ENABLED = os.environ.get("XFORMERS_DISABLED") is None
+XFORMERS_ENABLED = False
 try:
     if XFORMERS_ENABLED:
         from xformers.ops import memory_efficient_attention, unbind
@@ -51,7 +52,8 @@ class Attention(nn.Module):
         self.qkv = nn.Linear(dim, dim * 3, bias=qkv_bias)
         self.attn_drop = nn.Dropout(attn_drop)
         self.proj = nn.Linear(dim, dim, bias=proj_bias)
-        self.identity = nn.Identity()
+        self.post_softmax_identity = nn.Identity()
+        self.pre_softmax_identity = nn.Identity()
         self.proj_drop = nn.Dropout(proj_drop)
 
     def forward(self, x: Tensor) -> Tensor:
@@ -61,8 +63,9 @@ class Attention(nn.Module):
         q, k, v = qkv[0] * self.scale, qkv[1], qkv[2]
         attn = q @ k.transpose(-2, -1)
 
+        attn = self.pre_softmax_identity(attn)
         attn = attn.softmax(dim=-1)
-        attn = self.identity(attn)
+        attn = self.post_softmax_identity(attn)
         attn = self.attn_drop(attn)
 
         x = (attn @ v).transpose(1, 2).reshape(B, N, C)

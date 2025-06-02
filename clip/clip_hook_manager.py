@@ -1,8 +1,9 @@
 from shared.hook_manager import HookManager # Need to add shared to sys path for this import to work
-from functools import partial
-from shared.hook_fn import log_internal
 
 class ClipHookManager(HookManager):
+  def attn_pre_softmax_component(self, layer):
+    return self.model.visual.transformer.resblocks[layer].attn.pre_softmax_identity
+
   def attn_post_softmax_component(self, layer):
     return self.model.visual.transformer.resblocks[layer].attn.post_softmax_identity
 

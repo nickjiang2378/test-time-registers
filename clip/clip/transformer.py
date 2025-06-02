@@ -301,6 +301,7 @@ class MultiheadAttention(nn.Module):
 
         self.add_zero_attn = add_zero_attn
         self.post_softmax_identity = nn.Identity()
+        self.pre_softmax_identity = nn.Identity()
 
     def forward_direct(self, x, attn_mask=None):
         B, N, C = x.shape
@@ -322,6 +323,7 @@ class MultiheadAttention(nn.Module):
         if attn_mask is not None:
             attn += attn_mask
         attn = self.hook("post_mask", ret=attn)
+        attn = self.pre_softmax_identity(attn)
         attn = attn.softmax(dim=-1)
         attn = self.post_softmax_identity(attn)
         attn = self.hook("post_softmax", ret=attn)
@@ -408,6 +410,7 @@ class MultiheadAttention(nn.Module):
         if attn_mask is not None:
             attn += attn_mask
         attn = self.hook("attention.post_mask", ret=attn)
+        attn = self.pre_softmax_identity(attn)
         attn = attn.softmax(dim=-1)
         attn = self.post_softmax_identity(attn)
         attn = self.hook("attention.post_softmax", ret=attn)  # [B, H, N, N]
@@ -449,6 +452,7 @@ class MultiheadAttention(nn.Module):
         if attn_mask is not None:
             attn += attn_mask
         attn = self.hook("attention.post_mask", ret=attn)
+        attn = self.pre_softmax_identity(attn)
         attn = attn.softmax(dim=-1)
         attn = self.post_softmax_identity(attn)
         attn = self.hook("attention.post_softmax", ret=attn)  # [B, H, N, N]
@@ -515,6 +519,7 @@ class MultiheadAttention(nn.Module):
         if attn_mask is not None:
             attn += attn_mask
         attn = self.hook("attention.post_mask", ret=attn)
+        attn = self.pre_softmax_identity(attn)
         attn = attn.softmax(dim=-1)
         attn = self.post_softmax_identity(attn)
         attn = self.hook("attention.post_softmax", ret=attn)  # [B, H, N, N]
@@ -803,10 +808,11 @@ class VisionTransformer(nn.Module):
         #########################################################################################
         #                               START OF CUSTOM CODE                                    #
         #########################################################################################
+        total_patches = x.shape[1]
         extra_token_embeddings = []
         for i in range(extra_tokens):
-            extra_token = x.mean(dim = 1)
-            # extra_token = x[:, (total_patches // extra_tokens) * i + 1: (total_patches // extra_tokens) * (i + 1) + 1, :].mean(dim=1)
+            # extra_token = x.mean(dim = 1)
+            extra_token = x[:, (total_patches // extra_tokens) * i + 1: (total_patches // extra_tokens) * (i + 1) + 1, :].mean(dim=1)
             extra_token_embeddings.append(extra_token.to(x.dtype).to(x.device)
                 + torch.zeros(
                     x.shape[0], 1, x.shape[-1], dtype=x.dtype, device=x.device

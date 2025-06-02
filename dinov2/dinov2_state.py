@@ -2,6 +2,7 @@ import os
 import torch
 from dinov2.data.transforms import make_classification_eval_transform
 from dinov2_hook_manager import Dinov2HookManager
+from dinov2.layers.swiglu_ffn import SwiGLUFFN, SwiGLUFFNFused
 
 backbone_archs = {
     "small": "vits14",
@@ -9,14 +10,19 @@ backbone_archs = {
     "large": "vitl14",
     "large_reg": "vitl14_reg",
     "giant": "vitg14",
+    "giant_reg": "vitg14_reg",
 }
 
-def run_model(model, image, num_registers = 0):
-  prev_num_registers = model.num_register_tokens
-  model.num_register_tokens = num_registers
+def run_model(model, image, num_registers = None):
+  if num_registers is not None:
+    prev_num_registers = model.num_register_tokens
+    model.num_register_tokens = num_registers
+
   with torch.no_grad():
     representation = model(image)
-  model.num_register_tokens = prev_num_registers
+
+  if num_registers is not None:
+    model.num_register_tokens = prev_num_registers
   return representation
 
 def preprocess(image):
@@ -27,8 +33,11 @@ def preprocess(image):
   transformed_image = classification_transform(rescaled_image)
   return transformed_image
 
-def get_num_neurons_per_layer(backbone_model):
-  return backbone_model.blocks[0].mlp.fc1.out_features
+def get_num_neurons_per_mlp(backbone_model):
+  if isinstance(backbone_model.blocks[0].mlp, SwiGLUFFN) or isinstance(backbone_model.blocks[0].mlp, SwiGLUFFNFused):
+    return backbone_model.blocks[0].mlp.w3.in_features
+  else:
+    return backbone_model.blocks[0].mlp.fc1.out_features
 
 def get_num_layers(backbone_model):
   return len(backbone_model.blocks)
@@ -55,7 +64,7 @@ def load_dinov2_state(config):
     model=backbone_model,
     num_heads=get_num_heads(backbone_model),
     num_layers=get_num_layers(backbone_model),
-    num_neurons_per_layer=get_num_neurons_per_layer(backbone_model),
+    num_neurons_per_layer=get_num_neurons_per_mlp(backbone_model),
     patch_size=backbone_model.patch_size,
     run_model=run_model,
     preprocess=preprocess,
