@@ -61,11 +61,3 @@ To study ViTs beyond CLIP and DINOv2, we recommend creating a new environment to
 2. `custom_state.py`: create a `load_model_state` function that loads in a model based on a config (to specify size, etc.), instantiates the hook manager, and returns metadata like number of layers. See `dinov2/dinov2_state.py` for an example.
 
 Lastly, you should modify the model code to enable adding in extra tokens initialized to the mean of the image patches. This is necessary for creating our "test-time" registers to shift outliers from the image to. In CLIP, we pass in the number of registers during the forward pass. In DINOv2, we set this number as an attribute of the model class. See their respective folders for more details.
-
-
-## TODO
-
-Support swiglu_ffn.
-Add skeleton for custom model
-Test whether independent model environemnts work in the notebook.
-Add shared/requirements.txt file
