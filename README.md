@@ -1,6 +1,6 @@
 # Vision Transformers Don't Need Trained Registers
 
-[Nick Jiang](nickjiang.me), [Amil Dravid](https://avdravid.github.io/), [Alexei Efros](https://people.eecs.berkeley.edu/~efros/), [Yossi Gandelsman](https://yossigandelsman.github.io/)
+[Nick Jiang](https://nickjiang.me)\*, [Amil Dravid](https://avdravid.github.io/)\*, [Alexei Efros](https://people.eecs.berkeley.edu/~efros/), [Yossi Gandelsman](https://yossigandelsman.github.io/)
 
 [Paper]() | [Project Page]()
 
@@ -12,8 +12,8 @@
 
 ### Repo
 ```
-git clone git@github.com:nickjiang2378/vit-register-neurons.git
-cd vit-register-neurons
+git clone git@github.com:nickjiang2378/test-time-registers.git
+cd test-time-registers
 ```
 
 ### Environment
@@ -24,14 +24,17 @@ conda env create -f environment.yml
 
 ## Repo Overview
 ```
-vit-register-neurons
-├── clip
+test-time-registers/
+├── clip/
+│   ├── ...
 │   ├── clip_hook_manager.py
 │   └── clip_state.py
-├── dinov2
+├── dinov2/
+│   ├── ...
 │   ├── dinov2_hook_manager.py
 │   └── dinov2_state.py
-└── shared
+└── shared/
+    ├── ...
     ├── algorithms.py
     ├── hook_manager.py
     └── hook_fn.py

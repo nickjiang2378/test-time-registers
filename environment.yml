@@ -1,4 +1,4 @@
-name: vit_register_neurons
+name: test_time_registers
 channels:
   - pytorch
   - conda-forge
