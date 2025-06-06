@@ -95,7 +95,7 @@ For ease of use, we provide models that already include the precomputed register
 </table>
 
 ## Evaluation
-Since the test-time registers and register neurons are native to the HuggingFace models above, we recommend using them for evaluation. Below we provide the instructions on how to reproduce results from our papers. 
+Since the test-time registers and register neurons are native to the HuggingFace models above, we recommend using them for evaluation. Below we provide the instructions on how to reproduce results from our paper.  
 
 **DINOv2 IN-1k Linear Probe (Tables 1,2):** We use the original [DINOv2 repo](https://github.com/facebookresearch/dinov2) which already provides the set of hyperparameters.  
 **OpenCLIP IN-1k Linear Probe (Table 2):** We use the linear probing code from [here](https://github.com/mlfoundations/wise-ft) with a learning rate of 0.01 for 10 epochs.  
