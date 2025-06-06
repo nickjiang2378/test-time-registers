@@ -93,3 +93,6 @@ For ease of use, we provide models that already include the precomputed register
     </tr>
   </tbody>
 </table>
+
+## Evaluation
+Since the test-time registers and register neurons are native to the HuggingFace models above, we recommend using them for evaluation. 
