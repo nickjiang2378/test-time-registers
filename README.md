@@ -95,4 +95,6 @@ For ease of use, we provide models that already include the precomputed register
 </table>
 
 ## Evaluation
-Since the test-time registers and register neurons are native to the HuggingFace models above, we recommend using them for evaluation. 
+Since the test-time registers and register neurons are native to the HuggingFace models above, we recommend using them for evaluation. Below we provide the instructions on how to reproduce results from our papers. 
+
+<em>DINOv2 IN-1k Linear Probe:</em>
