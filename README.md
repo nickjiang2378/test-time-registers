@@ -99,4 +99,4 @@ Since the test-time registers and register neurons are native to the HuggingFace
 
 **DINOv2 IN-1k Linear Probe (Tables 1,2):** We use the original [DINOv2 Repo](https://github.com/facebookresearch/dinov2) which already provides the set of hyperparameters. \n
 **OpenCLIP IN-1k Linear Probe (Table 2):** We use the linear probing code from [here](https://github.com/mlfoundations/wise-ft) with a learning rate of 0.01 for 10 epochs. 
-**ADE20k Segmentation and NYUv2 Depth Estimation Linear Probe (Table 2):** Register the models [here]([https://github.com/mlfoundations/wise-ft](https://github.com/Jiawei-Yang/Denoising-ViT)), which already provides the set of hyperparameters for both experiments.
+**ADE20k Segmentation and NYUv2 Depth Estimation Linear Probe (Table 2):** Register the models [here](https://github.com/Jiawei-Yang/Denoising-ViT), which already provides the set of hyperparameters for both experiments.
