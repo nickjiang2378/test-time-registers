@@ -77,16 +77,16 @@ Lastly, you should modify the model code to enable adding in extra tokens initia
   </thead>
   <tbody>
     <tr>
-      <td>OpenCLIP-ViT-B-16-laion2B-s34B-b88K with test-time register</td>
-      <td><a href="https://dl.fbaipublicfiles.com/dinov2/dinov2_vits14/dinov2_vits14_pretrain.pth">backbone only</a></td>
+      <td>OpenCLIP ViT-B/16 with test-time register</td>
+      <td><a href="https://dl.fbaipublicfiles.com/dinov2/dinov2_vits14/dinov2_vits14_pretrain.pth">Link</a></td>
     </tr>
     <tr>
-      <td>ViT-S/14 distilled</td>
-      <td><a href="https://dl.fbaipublicfiles.com/dinov2/dinov2_vits14/dinov2_vits14_reg4_pretrain.pth">backbone only</a></td>
+      <td>OpenCLIP ViT-L/14 with test-time register</td>
+      <td><a href="https://dl.fbaipublicfiles.com/dinov2/dinov2_vits14/dinov2_vits14_reg4_pretrain.pth">Link</a></td>
     </tr>
     <tr>
-      <td>ViT-B/14 distilled</td>
-      <td><a href="https://dl.fbaipublicfiles.com/dinov2/dinov2_vitb14/dinov2_vitb14_pretrain.pth">backbone only</a></td>
+      <td>DINOv2 ViT-L/14 with test-time register</td>
+      <td><a href="https://dl.fbaipublicfiles.com/dinov2/dinov2_vitb14/dinov2_vitb14_pretrain.pth">Link</a></td>
     </tr>
   </tbody>
 </table>
