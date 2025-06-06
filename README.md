@@ -71,12 +71,8 @@ Lastly, you should modify the model code to enable adding in extra tokens initia
 <table style="margin: auto">
   <thead>
     <tr>
-      <th>model</th>
-      <th># of<br />params</th>
-      <th>with<br />registers</th>
-      <th>ImageNet<br />k-NN</th>
-      <th>ImageNet<br />linear</th>
-      <th>download</th>
+      <th>Model</th>
+      <th>🤗 Link</th>
     </tr>
   </thead>
   <tbody>
