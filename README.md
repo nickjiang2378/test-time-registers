@@ -97,7 +97,7 @@ For ease of use, we provide models that already include the precomputed register
 ## Evaluation
 Since the test-time registers and register neurons are native to the HuggingFace models above, we recommend using them for evaluation. Below we provide the instructions on how to reproduce results from our papers. 
 
-**DINOv2 IN-1k Linear Probe (Tables 1,2):** We use the original [DINOv2 Repo](https://github.com/facebookresearch/dinov2) which already provides the set of hyperparameters.  
+**DINOv2 IN-1k Linear Probe (Tables 1,2):** We use the original [DINOv2 repo](https://github.com/facebookresearch/dinov2) which already provides the set of hyperparameters.  
 **OpenCLIP IN-1k Linear Probe (Table 2):** We use the linear probing code from [here](https://github.com/mlfoundations/wise-ft) with a learning rate of 0.01 for 10 epochs.  
 **ADE20k Segmentation and NYUv2 Depth Estimation Linear Probe (Table 2):** Add the models [here](https://github.com/Jiawei-Yang/Denoising-ViT), which already provides the set of hyperparameters for both experiments.  
 **OpenCLIP Zero-Shot ImageNet Classification (Table 3):** We follow the standard zero-shot protocol in [here](https://github.com/openai/CLIP). An example can also be found in `openclip_demo.ipynb`.  
