@@ -1,4 +1,4 @@
-# Vision Transformers Don't Need Trained Registers
+# Vision Transformers Don't Need <em>Trained</em> Registers
 
 [Nick Jiang](https://nickjiang.me)\*, [Amil Dravid](https://avdravid.github.io/)\*, [Alexei Efros](https://people.eecs.berkeley.edu/~efros/), [Yossi Gandelsman](https://yossigandelsman.github.io/)
 
