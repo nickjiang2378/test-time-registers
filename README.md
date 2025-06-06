@@ -64,3 +64,85 @@ To study ViTs beyond CLIP and DINOv2, we recommend creating a new environment to
 2. `custom_state.py`: create a `load_model_state` function that loads in a model based on a config (to specify size, etc.), instantiates the hook manager, and returns metadata like number of layers. See `dinov2/dinov2_state.py` for an example.
 
 Lastly, you should modify the model code to enable adding in extra tokens initialized to zeros. This is necessary for creating our "test-time" registers to shift outliers from the image to. In CLIP, we pass in the number of registers during the forward pass. In DINOv2, we set this number as an attribute of the model class. See their respective folders for more details.
+
+
+# Ready-to-Use Models with Test-Time Registers
+
+<table style="margin: auto">
+  <thead>
+    <tr>
+      <th>model</th>
+      <th># of<br />params</th>
+      <th>with<br />registers</th>
+      <th>ImageNet<br />k-NN</th>
+      <th>ImageNet<br />linear</th>
+      <th>download</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>ViT-S/14 distilled</td>
+      <td align="right">21 M</td>
+      <td align="center">:x:</td>
+      <td align="right">79.0%</td>
+      <td align="right">81.1%</td>
+      <td><a href="https://dl.fbaipublicfiles.com/dinov2/dinov2_vits14/dinov2_vits14_pretrain.pth">backbone only</a></td>
+    </tr>
+    <tr>
+      <td>ViT-S/14 distilled</td>
+      <td align="right">21 M</td>
+      <td align="center">:white_check_mark:</td>
+      <td align="right">79.1%</td>
+      <td align="right">80.9%</td>
+      <td><a href="https://dl.fbaipublicfiles.com/dinov2/dinov2_vits14/dinov2_vits14_reg4_pretrain.pth">backbone only</a></td>
+    </tr>
+    <tr>
+      <td>ViT-B/14 distilled</td>
+      <td align="right">86 M</td>
+      <td align="center">:x:</td>
+      <td align="right">82.1%</td>
+      <td align="right">84.5%</td>
+      <td><a href="https://dl.fbaipublicfiles.com/dinov2/dinov2_vitb14/dinov2_vitb14_pretrain.pth">backbone only</a></td>
+    </tr>
+    <tr>
+      <td>ViT-B/14 distilled</td>
+      <td align="right">86 M</td>
+      <td align="center">:white_check_mark:</td>
+      <td align="right">82.0%</td>
+      <td align="right">84.6%</td>
+      <td><a href="https://dl.fbaipublicfiles.com/dinov2/dinov2_vitb14/dinov2_vitb14_reg4_pretrain.pth">backbone only</a></td>
+    </tr>
+    <tr>
+      <td>ViT-L/14 distilled</td>
+      <td align="right">300 M</td>
+      <td align="center">:x:</td>
+      <td align="right">83.5%</td>
+      <td align="right">86.3%</td>
+      <td><a href="https://dl.fbaipublicfiles.com/dinov2/dinov2_vitl14/dinov2_vitl14_pretrain.pth">backbone only</a></td>
+    </tr>
+    <tr>
+      <td>ViT-L/14 distilled</td>
+      <td align="right">300 M</td>
+      <td align="center">:white_check_mark:</td>
+      <td align="right">83.8%</td>
+      <td align="right">86.7%</td>
+      <td><a href="https://dl.fbaipublicfiles.com/dinov2/dinov2_vitl14/dinov2_vitl14_reg4_pretrain.pth">backbone only</a></td>
+    </tr>
+    <tr>
+      <td>ViT-g/14</td>
+      <td align="right">1,100 M</td>
+      <td align="center">:x:</td>
+      <td align="right">83.5%</td>
+      <td align="right">86.5%</td>
+      <td><a href="https://dl.fbaipublicfiles.com/dinov2/dinov2_vitg14/dinov2_vitg14_pretrain.pth">backbone only</a></td>
+    </tr>
+    <tr>
+      <td>ViT-g/14</td>
+      <td align="right">1,100 M</td>
+      <td align="center">:white_check_mark:</td>
+      <td align="right">83.7%</td>
+      <td align="right">87.1%</td>
+      <td><a href="https://dl.fbaipublicfiles.com/dinov2/dinov2_vitg14/dinov2_vitg14_reg4_pretrain.pth">backbone only</a></td>
+    </tr>
+  </tbody>
+</table>
