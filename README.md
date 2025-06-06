@@ -81,15 +81,15 @@ For ease of use, we provide models that already include the precomputed register
   <tbody>
     <tr>
       <td>OpenCLIP ViT-B/16 with test-time register</td>
-      <td><a href="https://dl.fbaipublicfiles.com/dinov2/dinov2_vits14/dinov2_vits14_pretrain.pth">Link</a></td>
+      <td><a href="https://huggingface.co/amildravid4292/clip-vitb16-test-time-registers">Link</a></td>
     </tr>
     <tr>
       <td>OpenCLIP ViT-L/14 with test-time register</td>
-      <td><a href="https://dl.fbaipublicfiles.com/dinov2/dinov2_vits14/dinov2_vits14_reg4_pretrain.pth">Link</a></td>
+      <td><a href="https://huggingface.co/amildravid4292/clip-vitb16-test-time-registers">Link</a></td>
     </tr>
     <tr>
       <td>DINOv2 ViT-L/14 with test-time register</td>
-      <td><a href="https://dl.fbaipublicfiles.com/dinov2/dinov2_vitb14/dinov2_vitb14_pretrain.pth">Link</a></td>
+      <td><a href="https://huggingface.co/amildravid4292/clip-vitb16-test-time-registers">Link</a></td>
     </tr>
   </tbody>
 </table>
