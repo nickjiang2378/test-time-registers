@@ -77,7 +77,7 @@ Lastly, you should modify the model code to enable adding in extra tokens initia
   </thead>
   <tbody>
     <tr>
-      <td>ViT-S/14 distilled</td>
+      <td>OpenCLIP-ViT-B-16-laion2B-s34B-b88K with test-time register</td>
       <td><a href="https://dl.fbaipublicfiles.com/dinov2/dinov2_vits14/dinov2_vits14_pretrain.pth">backbone only</a></td>
     </tr>
     <tr>
