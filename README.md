@@ -49,7 +49,7 @@ Here are the most important files in this repo:
 
 `clip_state.py` / `dinov2_state.py`: loads model, instantiates hook manager, and passes important metadata like number of layers
 
-## Usage
+## Register Neuron Discovery
 
 See `register_neurons.ipynb` to automatically find register neurons and analyze the effects of intervening upon them with test-time registers.
 
