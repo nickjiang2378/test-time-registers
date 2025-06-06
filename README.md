@@ -66,7 +66,7 @@ To study ViTs beyond CLIP and DINOv2, we recommend creating a new environment to
 Lastly, you should modify the model code to enable adding in extra tokens initialized to zeros. This is necessary for creating our "test-time" registers to shift outliers from the image to. In CLIP, we pass in the number of registers during the forward pass. In DINOv2, we set this number as an attribute of the model class. See their respective folders for more details.
 
 
-# Ready-to-Use Models with Test-Time Registers
+# Ready-to-Use Models with Test-Time Registers 🤗
 
 <table style="margin: auto">
   <thead>
