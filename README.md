@@ -68,6 +68,9 @@ Lastly, you should modify the model code to enable adding in extra tokens initia
 
 # Ready-to-Use Models with Test-Time Registers 🤗
 
+For ease of use, we provide models that already include the precomputed register neurons and test-time register. Please visit the links below or take a look at `dinov2_demo.ipynb` and `openclip_demo.ipynb` for example usage. 
+
+
 <table style="margin: auto">
   <thead>
     <tr>
