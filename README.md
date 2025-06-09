@@ -99,7 +99,7 @@ Since CLIP-style models have not been released with registers, we provide OpenCL
 
 
 ## Evaluation
-Test-time registers and register neurons are native to the OpenCLIP HuggingFace models above, so we recommend using them for evaluation. For DINOv2, we provide a ModifiedDINO wrapper that integrates the register neuron intervention and test-time register into the DINOv2 forward pass. Please see example usage in `ModifiedDino_example.ipynb`. Below we provide the instructions on how to reproduce results from our paper. We use the default hyperparameters provided by these repos unless none are defined. 
+Test-time registers and register neurons are native to the OpenCLIP HuggingFace models above, so we recommend using those versions for evaluating OpenCLIP. For DINOv2, we provide a ModifiedDINO wrapper that integrates the register neuron intervention and test-time register into the DINOv2 forward pass. Please see example usage in `ModifiedDino_example.ipynb`. Below we provide the instructions on how to reproduce results from our paper. We use the default hyperparameters provided by these repos unless none are defined. 
 
 **DINOv2 IN-1k Linear Probe (Tables 1,2):** We use the original [DINOv2 repo](https://github.com/facebookresearch/dinov2) which already provides the set of hyperparameters.  
 
