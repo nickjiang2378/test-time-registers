@@ -117,5 +117,17 @@ Since the test-time registers and register neurons are native to the HuggingFace
 ## TODO
 
 - [ ] Upload LLaVA Llama-3 8B with test-time register to Huggingface. 
-- [ ] Add interactive VLM notebook example. 
+- [ ] Add interactive VLM notebook example.
+      
+## Citation
+If you found this repository useful please consider starring ⭐ and citing:
+```
+@InProceedings{Dravid_2023_ICCV,
+    author    = {Dravid, Amil and Gandelsman, Yossi and Efros, Alexei A. and Shocher, Assaf},
+    title     = {Rosetta Neurons: Mining the Common Units in a Model Zoo},
+    booktitle = {Proceedings of the IEEE/CVF International Conference on Computer Vision (ICCV)},
+    month     = {October},
+    year      = {2023},
+    pages     = {1934-1943}
+}
 
