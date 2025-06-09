@@ -4,6 +4,3 @@ This folder was modified from this [repo](https://github.com/yossigandelsman/sec
 1. Rename the `utils` folder to `clip`.
 2. `clip/transformer.py`: we add extra tokens to serve as "test-time" registers during the forward pass.
 
-## Model environment
-
-To create an environment just for CLIP, execute `conda env create -f environment.yml`. Then, run the analysis for CLIP in `register_neurons.ipynb`.
