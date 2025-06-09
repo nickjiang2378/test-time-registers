@@ -89,7 +89,7 @@ For ease of use, we provide models that already include the precomputed register
     </tr>
     <tr>
       <td>LLaVA Llama-3 8B with test-time register</td>
-      <td>coming next week</td>
+      <td>Expected next week!</td>
     </tr>
   </tbody>
 </table>
