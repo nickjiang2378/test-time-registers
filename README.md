@@ -75,24 +75,31 @@ For ease of use, we provide models that already include the precomputed register
   <thead>
     <tr>
       <th>Model</th>
-      <th>🤗 Link</th>
+      <th style="text-align: center">🤗 Link</th>
     </tr>
   </thead>
   <tbody>
     <tr>
       <td>OpenCLIP ViT-B/16 with test-time register</td>
-      <td><a href="https://huggingface.co/amildravid4292/clip-vitb16-test-time-registers">Link</a></td>
+      <td style="text-align: center">
+        <a href="https://huggingface.co/amildravid4292/clip-vitb16-test-time-registers">Link</a>
+      </td>
     </tr>
     <tr>
       <td>OpenCLIP ViT-L/14 with test-time register</td>
-      <td><a href="https://huggingface.co/amildravid4292/clip-vitl14-test-time-registers">Link</a></td>
+      <td style="text-align: center">
+        <a href="https://huggingface.co/amildravid4292/clip-vitl14-test-time-registers">Link</a>
+      </td>
     </tr>
     <tr>
       <td>LLaVA Llama-3 8B with test-time register</td>
-      <td>Expected next week!</td>
+      <td style="text-align: center">
+        Avail. by next week!
+      </td>
     </tr>
   </tbody>
 </table>
+
 
 ## Evaluation
 Since the test-time registers and register neurons are native to the HuggingFace models above, we recommend using them for evaluation. Below we provide the instructions on how to reproduce results from our paper. We use the default hyperparameters provided by these repos unless none are defined. 
