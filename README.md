@@ -85,11 +85,11 @@ For ease of use, we provide models that already include the precomputed register
     </tr>
     <tr>
       <td>OpenCLIP ViT-L/14 with test-time register</td>
-      <td><a href="https://huggingface.co/amildravid4292/clip-vitb16-test-time-registers">Link</a></td>
+      <td><a href="https://huggingface.co/amildravid4292/clip-vitl14-test-time-registers">Link</a></td>
     </tr>
     <tr>
-      <td>DINOv2 ViT-L/14 with test-time register</td>
-      <td><a href="https://huggingface.co/amildravid4292/clip-vitb16-test-time-registers">Link</a></td>
+      <td>LLaVA Llama-3 8B with test-time register</td>
+      <td>coming next week</td>
     </tr>
   </tbody>
 </table>
