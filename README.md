@@ -67,8 +67,7 @@ Lastly, you should modify the model code to enable adding in extra tokens initia
 
 
 # Ready-to-Use Models with Test-Time Registers 🤗
-
-For ease of use, we provide models that already include the precomputed register neurons and test-time register. Please visit the links below or take a look at `dinov2_demo.ipynb` and `openclip_demo.ipynb` for example usage. 
+Since CLIP-style models have not been released with registers, we provide OpenCLIP models on HuggingFace that include precomputed register neurons and test-time registers. Please visit the links below and take a look `openclip_vitb16.ipynb` or `openclip_vitl14.ipynb` for example usage. These models can be further fine-tuned or used for other downstream applications. VLMs soon to come!
 <table style="margin: auto">
   <thead>
     <tr>
