@@ -50,7 +50,7 @@ def find_register_neurons(
     image_count += 1
     for layer in range(num_layers):
         act_layer = baseline_neuron_acts[layer]  # [seq_len, num_neurons]
-        register_values = act_layer[register_locations]  # [num_register_locations, num_neurons]
+        register_values = torch.abs(act_layer[register_locations])  # [num_register_locations, num_neurons]
 
         if apply_sparsity_filter:
             # Calculate which neurons are sparse
@@ -59,10 +59,10 @@ def find_register_neurons(
                 continue
 
             # Apply sparsity filter to means
-            neuron_scores[i, layer] = register_values.mean(dim=0) * sparse_neurons.float()
+            neuron_scores[image_count, layer] = register_values.mean(dim=0) * sparse_neurons.float()
         else:
             # Store mean activation at register locations
-            neuron_scores[i, layer] = register_values.mean(dim=0)
+            neuron_scores[image_count, layer] = register_values.mean(dim=0)
 
   assert image_count > 0, "No images processed: either lower the register norm threshold or increase the number of processed images"
 

@@ -3,6 +3,7 @@ import random
 from PIL import Image
 import matplotlib.pyplot as plt
 from mpl_toolkits.axes_grid1 import make_axes_locatable
+import torch
 
 def load_images(imagenet_path, count = 10, images_only = True):
   # Sample random images from imagenet
@@ -106,3 +107,17 @@ def plot_attn_maps(attn_maps):
 
 def filter_highest_layer(register_norms, highest_layer):
   return [norm for norm in register_norms if norm[0] <= highest_layer]
+
+def filter_lowest_layer(register_norms, lowest_layer):
+  return [norm for norm in register_norms if norm[0] >= lowest_layer]
+
+def filter_layers(register_norms, highest_layer = -1, lowest_layer = 0):
+  if highest_layer == -1:
+    return [norm for norm in register_norms if norm[0] >= lowest_layer]
+  else:
+    return [norm for norm in register_norms if norm[0] >= lowest_layer and norm[0] <= highest_layer]
+
+def abs_max(tensor):
+   pos_max = torch.max(tensor)
+   neg_max = torch.min(tensor)
+   return pos_max if abs(pos_max) > abs(neg_max) else neg_max

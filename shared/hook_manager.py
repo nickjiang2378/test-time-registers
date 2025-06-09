@@ -1,7 +1,15 @@
-from abc import ABC, abstractmethod
+from abc import ABC
 import numpy as np
 from .hook_fn import activate_on_registers, log_internal, apply_func_on_internal
 from functools import partial
+
+from enum import Enum
+
+class HookMode(Enum):
+  DEBUG = "debug"
+  ANALYSIS = "analysis"
+  INTERVENE = "intervene"
+
 
 class HookManager(ABC):
   def __init__(self, model, debug = False):
@@ -11,6 +19,7 @@ class HookManager(ABC):
     # Hooks
     self.hooks = {
       "log_layer_outputs": [],
+      "log_attention_outputs": [],
       "log_neuron_activations": [],
       "log_attention_maps": [],
       "intervene_register_neurons": [],
@@ -25,25 +34,25 @@ class HookManager(ABC):
     # Logs of internal model data
     self.logs = {
       "attention_maps": [],
+      "attention_outputs": [],
       "layer_outputs": [],
       "neuron_activations": [],
     }
 
-  @abstractmethod
+  def attn_output_component(self, layer):
+    raise NotImplementedError("This method should be overridden in a subclass")
+
   def attn_post_softmax_component(self, layer):
-    pass
+    raise NotImplementedError("This method should be overridden in a subclass")
 
-  @abstractmethod
   def layer_output_component(self, layer):
-    pass
+    raise NotImplementedError("This method should be overridden in a subclass")
 
-  @abstractmethod
   def neuron_activation_component(self, layer):
-    pass
+    raise NotImplementedError("This method should be overridden in a subclass")
 
-  @abstractmethod
   def num_layers(self):
-    pass
+    raise NotImplementedError("This method should be overridden in a subclass")
 
   """
   Optional: override this method to get / intervene upon attention maps before softmax
@@ -56,6 +65,10 @@ class HookManager(ABC):
       # Attention maps
       log_attention_hook = self.attn_post_softmax_component(layer).register_forward_hook(partial(log_internal, store = self.logs["attention_maps"]))
       self.hooks["log_attention_maps"].append(log_attention_hook)
+
+      # Attention outputs
+      log_attention_output_hook = self.attn_output_component(layer).register_forward_hook(partial(log_internal, store = self.logs["attention_outputs"]))
+      self.hooks["log_attention_outputs"].append(log_attention_output_hook)
 
       # Layer outputs
       log_layer_output_hook = self.layer_output_component(layer).register_forward_hook(partial(log_internal, store = self.logs["layer_outputs"]))
@@ -89,7 +102,6 @@ class HookManager(ABC):
             neuron_indices=register_neurons[layer],
             scale=self.register_neurons_intervention["scale"],
             normal_values=self.register_neurons_intervention["normal_values"],
-            bottom_frac=self.register_neurons_intervention["bottom_frac"]
         )
 
         intervene_register_neurons_hook = self.neuron_activation_component(layer).register_forward_hook(intervene_register_neurons_fn)
@@ -124,6 +136,12 @@ class HookManager(ABC):
       else:
         raise ValueError(f"Invalid type for hook name: {type(self.hooks[hook_name])}")
 
+  def get_attention_outputs(self):
+    assert self.debug, "Debug mode must be enabled to get attention outputs"
+    if not self.logs["attention_outputs"]:
+      return None
+    return np.concatenate(self.logs["attention_outputs"], axis=0)
+
   def get_attention_maps(self):
     assert self.debug, "Debug mode must be enabled to get attention maps"
     if not self.logs["attention_maps"]:
@@ -145,13 +163,12 @@ class HookManager(ABC):
   def set_debug(self, debug):
     self.debug = debug
 
-  def intervene_register_neurons(self, num_registers, neurons_to_ablate, scale = 1.0, normal_values = "zero", bottom_frac = 0.75):
+  def intervene_register_neurons(self, num_registers, neurons_to_ablate, scale = 1.0, normal_values = "zero"):
     self.register_neurons_intervention = {
       "neurons_to_ablate": neurons_to_ablate,
       "num_registers": num_registers,
       "scale": scale,
       "normal_values": normal_values,
-      "bottom_frac": bottom_frac,
     }
 
   def intervene_attn_pre_softmax(self, layers, funcs):
