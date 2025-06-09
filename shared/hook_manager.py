@@ -6,15 +6,14 @@ from functools import partial
 from enum import Enum
 
 class HookMode(Enum):
-  DEBUG = "debug"
   ANALYSIS = "analysis"
   INTERVENE = "intervene"
 
 
 class HookManager(ABC):
-  def __init__(self, model, debug = False):
+  def __init__(self, model):
     self.model = model
-    self.debug = debug
+    self.mode = HookMode.ANALYSIS
 
     # Hooks
     self.hooks = {
@@ -78,7 +77,9 @@ class HookManager(ABC):
       log_neuron_activations_hook = self.neuron_activation_component(layer).register_forward_hook(partial(log_internal, store = self.logs["neuron_activations"]))
       self.hooks["log_neuron_activations"].append(log_neuron_activations_hook)
 
-  def reinit(self):
+  def reinit(self, mode = HookMode.ANALYSIS):
+    self.mode = mode
+
     # Remove all hooks
     self.unregister_all_hooks()
 
@@ -106,20 +107,20 @@ class HookManager(ABC):
 
         intervene_register_neurons_hook = self.neuron_activation_component(layer).register_forward_hook(intervene_register_neurons_fn)
         self.hooks["intervene_register_neurons"].append(intervene_register_neurons_hook)
-    if self.debug:
-      if self.layer_output_intervention is not None:
-        for i, layer in enumerate(self.layer_output_intervention["layers"]):
-          intervene_layer_output_fn = partial(apply_func_on_internal, func = self.layer_output_intervention["func"][i])
-          intervene_layer_output_hook = self.layer_output_component(layer).register_forward_hook(intervene_layer_output_fn)
-          self.hooks["intervene_layer_outputs"].append(intervene_layer_output_hook)
-      if self.attn_pre_softmax_intervention is not None and self.attn_pre_softmax_component(0) is not None:
-        for i, layer in enumerate(self.attn_pre_softmax_intervention["layers"]):
-          intervene_attn_pre_softmax_fn = partial(apply_func_on_internal, func = self.attn_pre_softmax_intervention["func"][i])
-          intervene_attn_pre_softmax_hook = self.attn_pre_softmax_component(layer).register_forward_hook(intervene_attn_pre_softmax_fn)
-          self.hooks["intervene_attn_pre_softmax"].append(intervene_attn_pre_softmax_hook)
+        
+    if self.layer_output_intervention is not None:
+      for i, layer in enumerate(self.layer_output_intervention["layers"]):
+        intervene_layer_output_fn = partial(apply_func_on_internal, func = self.layer_output_intervention["func"][i])
+        intervene_layer_output_hook = self.layer_output_component(layer).register_forward_hook(intervene_layer_output_fn)
+        self.hooks["intervene_layer_outputs"].append(intervene_layer_output_hook)
+    if self.attn_pre_softmax_intervention is not None and self.attn_pre_softmax_component(0) is not None:
+      for i, layer in enumerate(self.attn_pre_softmax_intervention["layers"]):
+        intervene_attn_pre_softmax_fn = partial(apply_func_on_internal, func = self.attn_pre_softmax_intervention["func"][i])
+        intervene_attn_pre_softmax_hook = self.attn_pre_softmax_component(layer).register_forward_hook(intervene_attn_pre_softmax_fn)
+        self.hooks["intervene_attn_pre_softmax"].append(intervene_attn_pre_softmax_hook)
 
     # Initialize log hooks
-    if self.debug:
+    if self.mode == HookMode.ANALYSIS:
       self.initialize_log_hooks()
 
   def unregister_hook(self, hook):
@@ -137,31 +138,31 @@ class HookManager(ABC):
         raise ValueError(f"Invalid type for hook name: {type(self.hooks[hook_name])}")
 
   def get_attention_outputs(self):
-    assert self.debug, "Debug mode must be enabled to get attention outputs"
+    assert self.mode == HookMode.ANALYSIS, "Analysis mode must be enabled to get attention outputs"
     if not self.logs["attention_outputs"]:
       return None
     return np.concatenate(self.logs["attention_outputs"], axis=0)
 
   def get_attention_maps(self):
-    assert self.debug, "Debug mode must be enabled to get attention maps"
+    assert self.mode == HookMode.ANALYSIS, "Analysis mode must be enabled to get attention maps"
     if not self.logs["attention_maps"]:
       return None
     return np.concatenate(self.logs["attention_maps"], axis=0)
 
   def get_layer_outputs(self):
-    assert self.debug, "Debug mode must be enabled to get layer outputs"
+    assert self.mode == HookMode.ANALYSIS, "Analysis mode must be enabled to get layer outputs"
     if not self.logs["layer_outputs"]:
       return None
     return np.concatenate(self.logs["layer_outputs"], axis=0)
 
   def get_neuron_activations(self):
-    assert self.debug, "Debug mode must be enabled to get neuron activations"
+    assert self.mode == HookMode.ANALYSIS, "Analysis mode must be enabled to get neuron activations"
     if not self.logs["neuron_activations"]:
       return None
     return np.concatenate(self.logs["neuron_activations"], axis=0)
 
   def set_debug(self, debug):
-    self.debug = debug
+    self.mode = HookMode.ANALYSIS if debug else HookMode.INTERVENE
 
   def intervene_register_neurons(self, num_registers, neurons_to_ablate, scale = 1.0, normal_values = "zero"):
     self.register_neurons_intervention = {
