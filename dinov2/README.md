@@ -6,6 +6,3 @@ This folder was modified from the official DINOv2 [repo](https://github.com/face
 3. `dinov2/layers/swiglu_ffn.py`: we add an identity function to extract MLP neuron activations for our analysis. Swiglu is used for larger backbone sizes.
 4. `dinov2/layers/attention.py`, `dinov2/layers/block.py`, `dinov2/layers/swiglu_ffn.py`: disable xformers for easier analysis
 
-## Model environment
-
-To create an environment just for DINOv2, create a new conda environment and install the packages in `requirements.txt`. Then, run the analysis for DINOv2 in `register_neurons.ipynb`.
