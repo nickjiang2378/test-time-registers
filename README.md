@@ -113,3 +113,9 @@ Since the test-time registers and register neurons are native to the HuggingFace
 **Imagenet Zero-Shot Segmentation (Table 4):** We use this [repo](https://github.com/yossigandelsman/clip_text_span) for evaluation of ImageNet zero-shot segmentation.  
 
 **LOST Unsupervised Object Discovery (Table 5):** We use the official [LOST repo](https://github.com/valeoai/LOST). We sweep over the last four layers of both OpenCLIP and DINOv2. For OpenCLIP, we use the value projection features, and for DINOv2, we the use the key features. We find that normalizing the features before LOST computation can improve results for all methods. Finally, following [Darcet et al. (2024)](https://arxiv.org/abs/2309.16588), we sweep over a manual bias term for the affinity matrix. For normalized features, sweep over [-1, 0].
+
+## TODO
+
+- [ ] Upload LLaVA Llama-3 8B with test-time register to Huggingface. 
+- [ ] Add interactive VLM notebook example. 
+
