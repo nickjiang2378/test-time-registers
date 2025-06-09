@@ -69,33 +69,34 @@ Lastly, you should modify the model code to enable adding in extra tokens initia
 # Ready-to-Use Models with Test-Time Registers 🤗
 
 For ease of use, we provide models that already include the precomputed register neurons and test-time register. Please visit the links below or take a look at `dinov2_demo.ipynb` and `openclip_demo.ipynb` for example usage. 
-
 <table style="margin: auto">
   <thead>
     <tr>
       <th>Model</th>
-      <th style="text-align: center;">🤗 Link</th>
+      <th style="text-align: center">🤗 Link</th>
     </tr>
   </thead>
   <tbody>
     <tr>
       <td>OpenCLIP ViT-B/16 with test-time register</td>
-      <td style="text-align: center;">
-        <div><a href="https://huggingface.co/amildravid4292/clip-vitb16-test-time-registers">Link</a></div>
+      <td style="text-align: center">
+        <a href="https://huggingface.co/amildravid4292/clip-vitb16-test-time-registers">Link</a>
       </td>
     </tr>
     <tr>
       <td>OpenCLIP ViT-L/14 with test-time register</td>
-      <td style="text-align: center;">
-        <div><a href="https://huggingface.co/amildravid4292/clip-vitl14-test-time-registers">Link</a></div>
+      <td style="text-align: center">
+        <a href="https://huggingface.co/amildravid4292/clip-vitl14-test-time-registers">Link</a>
       </td>
     </tr>
     <tr>
       <td>LLaVA Llama-3 8B with test-time register</td>
-      <td style="text-align: center;">
-        <div>Avail. by next week!</div>
+      <td style="text-align: center">
+        Avail. by next week!
       </td>
-    </t
+    </tr>
+  </tbody>
+</table>
 
 
 ## Evaluation
