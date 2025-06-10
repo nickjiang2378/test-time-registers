@@ -159,7 +159,7 @@ Registers all intervention and logging hooks. Log hooks are registered after int
 
 
 ## Evaluation
-Test-time registers and register neurons are native to the OpenCLIP HuggingFace models above, so we recommend using those versions for evaluating OpenCLIP. For DINOv2, we provide a ModifiedDINO wrapper that integrates the register neuron intervention and test-time register into the DINOv2 forward pass. Please see example usage in `ModifiedDino_example.ipynb`. Below we provide the instructions on how to reproduce results from our paper. We use the default hyperparameters provided by these repos unless none are defined.
+Test-time registers and register neurons are native to the OpenCLIP HuggingFace models above, so we recommend using those versions for evaluating OpenCLIP (see `openclip_example.ipynb`). For DINOv2, we provide access to a model integrated with test-time registers via torch hub (see `dinov2_example.ipynb`). Below we provide the instructions on how to reproduce results from our paper. We use the default hyperparameters provided by these repos unless none are defined.
 
 **DINOv2 IN-1k Linear Probe (Tables 1,2):** We use the original [DINOv2 repo](https://github.com/facebookresearch/dinov2) which already provides the set of hyperparameters.
 
