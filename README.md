@@ -2,14 +2,14 @@
 
 [Nick Jiang](https://nickjiang.me)\*, [Amil Dravid](https://avdravid.github.io/)\*, [Alexei Efros](https://people.eecs.berkeley.edu/~efros/), [Yossi Gandelsman](https://yossigandelsman.github.io/)
 
-[Paper]() | [Project Page](https://avdravid.github.io/test-time-registers/)
+[Paper](https://arxiv.org/pdf/2506.08010) | [Project Page](https://avdravid.github.io/test-time-registers/)
 
 ![Teaser Figure](plots/Teaser.png)
 
 **Controlling high-norm tokens in Vision Transformers.** As shown in [Darcet et al. (2024)](https://arxiv.org/abs/2309.16588), high-norm outlier tokens emerge in ViTs and lead to noisy attention maps (“Original”). By identifying the mechanism responsible for their emergence, we demonstrate that we can shift them to arbitrary positions at test time (“Shifted”). Shifting the outlier tokens outside of the image area mimics register behavior at test-time (“w/ Test-time Register”), resulting in more interpretable attention patterns and downstream performance comparable to models retrained with registers.
 
 ## Ready-to-Use Models with Test-Time Registers 🤗
-Since CLIP-style models have not been released with registers, we provide OpenCLIP models on HuggingFace that include precomputed register neurons and test-time registers. Please visit the links below and take a look `openclip_vitb16.ipynb` or `openclip_vitl14.ipynb` for example usage. These models can be further fine-tuned or used for other downstream applications. VLMs soon to come!
+We provide OpenCLIP models on HuggingFace that include precomputed register neurons and test-time registers. Please visit the links below and take a look `openclip_vitb16.ipynb` or `openclip_vitl14.ipynb` for example usage. These models can be further fine-tuned or used for other downstream applications. VLMs soon to come!
 <table style="margin: auto">
   <thead>
     <tr>
@@ -38,6 +38,12 @@ Since CLIP-style models have not been released with registers, we provide OpenCL
     </tr>
   </tbody>
 </table>
+
+To access DINOv2 with test-time registers without installing any dependencies, load the model directly from PyTorch Hub.
+```
+import torch
+model = torch.hub.load("nickjiang2378/test-time-registers/dinov2/", model = "dinov2_vitl14_tt_reg")
+```
 
 ## Repo Setup
 
@@ -178,6 +184,6 @@ If you found this repository useful please consider starring ⭐ and citing:
 @inproceedings{jiangvision,
   title={Vision Transformers Don't Need Trained Registers},
   author={Jiang, Nick and Dravid, Amil and Efros, Alexei A and Gandelsman, Yossi},
-  booktitle={arXiv preprint arXiv:2406.09413},
+  booktitle={arXiv preprint arXiv:2506.08010},
   year={2025}
 }
