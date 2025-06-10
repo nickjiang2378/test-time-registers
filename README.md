@@ -2,7 +2,7 @@
 
 [Nick Jiang](https://nickjiang.me)\*, [Amil Dravid](https://avdravid.github.io/)\*, [Alexei Efros](https://people.eecs.berkeley.edu/~efros/), [Yossi Gandelsman](https://yossigandelsman.github.io/)
 
-[Paper]() | [Project Page](https://avdravid.github.io/test-time-registers/)
+[Paper](https://arxiv.org/abs/2506.08010) | [Project Page](https://avdravid.github.io/test-time-registers/)
 
 ![Teaser Figure](plots/Teaser.png)
 
