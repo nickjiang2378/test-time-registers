@@ -9,7 +9,7 @@
 **Controlling high-norm tokens in Vision Transformers.** As shown in [Darcet et al. (2024)](https://arxiv.org/abs/2309.16588), high-norm outlier tokens emerge in ViTs and lead to noisy attention maps (“Original”). By identifying the mechanism responsible for their emergence, we demonstrate that we can shift them to arbitrary positions at test time (“Shifted”). Shifting the outlier tokens outside of the image area mimics register behavior at test-time (“w/ Test-time Register”), resulting in more interpretable attention patterns and downstream performance comparable to models retrained with registers.
 
 ## Ready-to-Use Models with Test-Time Registers 🤗
-We provide OpenCLIP models on HuggingFace that include precomputed register neurons and test-time registers. Please visit the links below and take a look `openclip_vitb16.ipynb` or `openclip_vitl14.ipynb` for example usage. These models can be further fine-tuned or used for other downstream applications. VLMs soon to come!
+We provide OpenCLIP models on HuggingFace that include precomputed register neurons and test-time registers. Please visit the links below and take a look `openclip_example.ipynb` for example usage. These models can be further fine-tuned or used for other downstream applications. VLMs soon to come!
 <table style="margin: auto">
   <thead>
     <tr>
@@ -42,7 +42,7 @@ We provide OpenCLIP models on HuggingFace that include precomputed register neur
 To access DINOv2 with test-time registers without installing any dependencies, load the model directly from PyTorch Hub.
 ```
 import torch
-model = torch.hub.load("nickjiang2378/test-time-registers/dinov2/", model = "dinov2_vitl14_tt_reg")
+model = torch.hub.load("nickjiang2378/test-time-registers/", model = "dinov2_vitl14_tt_reg")
 ```
 
 ## Repo Setup
