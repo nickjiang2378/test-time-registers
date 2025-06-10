@@ -1,4 +1,4 @@
-backbone_size: large
+backbone_size: vitl14
 device: cuda:0
 detect_outliers_layer: -2
 register_norm_threshold: 150

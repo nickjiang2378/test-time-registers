@@ -2,6 +2,9 @@ from shared.hook_manager import HookManager
 from dinov2.layers.swiglu_ffn import SwiGLUFFN, SwiGLUFFNFused
 
 class Dinov2HookManager(HookManager):
+  def attn_output_component(self, layer):
+    return self.model.blocks[layer].attn_out_identity
+
   def attn_pre_softmax_component(self, layer):
     return self.model.blocks[layer].attn.pre_softmax_identity
 

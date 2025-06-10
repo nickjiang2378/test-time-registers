@@ -4,15 +4,6 @@ from dinov2.data.transforms import make_classification_eval_transform
 from dinov2_hook_manager import Dinov2HookManager
 from dinov2.layers.swiglu_ffn import SwiGLUFFN, SwiGLUFFNFused
 
-backbone_archs = {
-    "small": "vits14",
-    "base": "vitb14",
-    "large": "vitl14",
-    "large_reg": "vitl14_reg",
-    "giant": "vitg14",
-    "giant_reg": "vitg14_reg",
-}
-
 def run_model(model, image, num_registers = None):
   if num_registers is not None:
     prev_num_registers = model.num_register_tokens
@@ -50,7 +41,7 @@ def load_dinov2_state(config):
 
   backbone_size = config["backbone_size"]
 
-  backbone_arch = backbone_archs[backbone_size]
+  backbone_arch = backbone_size
   backbone_name = f"dinov2_{backbone_arch}"
 
   backbone_model = torch.hub.load(repo_or_dir="dinov2/", model=backbone_name, source="local") # ensure that the repo path points to the `dinov2` directory in repo
