@@ -811,12 +811,9 @@ class VisionTransformer(nn.Module):
         total_patches = x.shape[1]
         extra_token_embeddings = []
         for i in range(extra_tokens):
-            # extra_token = x.mean(dim = 1)
-            extra_token = x[:, (total_patches // extra_tokens) * i + 1: (total_patches // extra_tokens) * (i + 1) + 1, :].mean(dim=1)
-            extra_token_embeddings.append(extra_token.to(x.dtype).to(x.device)
-                + torch.zeros(
+            extra_token_embeddings.append(torch.zeros(
                     x.shape[0], 1, x.shape[-1], dtype=x.dtype, device=x.device
-                ),
+                )
             )
         # Add extra tokens
         if extra_tokens > 0:

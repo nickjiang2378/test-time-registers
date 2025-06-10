@@ -219,12 +219,10 @@ class DinoVisionTransformer(nn.Module):
         #########################################################################################
         #                               START OF CUSTOM CODE                                    #
         #########################################################################################
+        
         # Edit register tokens
         register_tokens = torch.zeros((B, self.num_register_tokens, x.shape[-1])).to(x.device)
-        if self.num_register_tokens > 0:
-            num_register_tokens = register_tokens.shape[1]
-            for i in range(num_register_tokens):
-                register_tokens[:, i, :] = x.mean(dim=1)
+        
         #########################################################################################
         #                                END OF CUSTOM CODE                                     #
         #########################################################################################
