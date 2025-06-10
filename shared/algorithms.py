@@ -1,6 +1,7 @@
 import torch
 from tqdm import tqdm
 from .utils import load_images
+from .hook_manager import HookMode
 
 def find_register_neurons(
   model_state,
@@ -24,11 +25,9 @@ def find_register_neurons(
   neuron_scores = torch.zeros((len(random_images), num_layers, num_neurons), device=device)
   image_count = 0
 
-  hook_manager.set_debug(True)
-
   for i in tqdm(range(len(random_images)), desc="Processing random images"):
     image = preprocess(random_images[i]).unsqueeze(0).to(device)
-    hook_manager.reinit()
+    hook_manager.reinit(mode = HookMode.ANALYSIS)
     hook_manager.finalize()
 
     representation = run_model(model, image)

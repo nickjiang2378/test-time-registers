@@ -117,7 +117,7 @@ def filter_layers(register_norms, highest_layer = -1, lowest_layer = 0):
   else:
     return [norm for norm in register_norms if norm[0] >= lowest_layer and norm[0] <= highest_layer]
 
-def abs_max(tensor):
+def sign_max(tensor):
    pos_max = torch.max(tensor)
    neg_max = torch.min(tensor)
    return pos_max if abs(pos_max) > abs(neg_max) else neg_max

@@ -107,7 +107,7 @@ class HookManager(ABC):
 
         intervene_register_neurons_hook = self.neuron_activation_component(layer).register_forward_hook(intervene_register_neurons_fn)
         self.hooks["intervene_register_neurons"].append(intervene_register_neurons_hook)
-        
+
     if self.layer_output_intervention is not None:
       for i, layer in enumerate(self.layer_output_intervention["layers"]):
         intervene_layer_output_fn = partial(apply_func_on_internal, func = self.layer_output_intervention["func"][i])
@@ -161,8 +161,8 @@ class HookManager(ABC):
       return None
     return np.concatenate(self.logs["neuron_activations"], axis=0)
 
-  def set_debug(self, debug):
-    self.mode = HookMode.ANALYSIS if debug else HookMode.INTERVENE
+  def set_mode(self, mode):
+    self.mode = mode
 
   def intervene_register_neurons(self, num_registers, neurons_to_ablate, scale = 1.0, normal_values = "zero"):
     self.register_neurons_intervention = {

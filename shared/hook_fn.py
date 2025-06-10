@@ -1,5 +1,5 @@
 import torch
-from .utils import abs_max
+from .utils import sign_max
 
 def log_internal(module, input, output, store):
   store.append(output.detach().cpu().numpy())
@@ -15,9 +15,9 @@ def activate_on_registers(module, input, output, num_registers, neuron_indices, 
   if isinstance(scale, list):
     assert len(scale) == num_registers
     for i in range(num_registers):
-      output[0, -num_registers + i, neuron_indices] = scale[i] * abs_max(output[0, :, neuron_indices])
+      output[0, -num_registers + i, neuron_indices] = scale[i] * sign_max(output[0, :, neuron_indices])
   else:
-    output[0, -num_registers:, neuron_indices] = scale * abs_max(output[0, :, neuron_indices]).unsqueeze(0).expand(num_registers, -1)
+    output[0, -num_registers:, neuron_indices] = scale * sign_max(output[0, :, neuron_indices]).unsqueeze(0).expand(num_registers, -1)
   if normal_values == "zero":
     # Set all image patch activations to 0
     output[0, 1:-num_registers, neuron_indices] = 0
