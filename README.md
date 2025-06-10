@@ -64,3 +64,58 @@ To study ViTs beyond CLIP and DINOv2, we recommend creating a new environment to
 2. `custom_state.py`: create a `load_model_state` function that loads in a model based on a config (to specify size, etc.), instantiates the hook manager, and returns metadata like number of layers. See `dinov2/dinov2_state.py` for an example.
 
 Lastly, you should modify the model code to enable adding in extra tokens initialized to the mean of the image patches. This is necessary for creating our "test-time" registers to shift outliers from the image to. In CLIP, we pass in the number of registers during the forward pass. In DINOv2, we set this number as an attribute of the model class. See their respective folders for more details.
+
+### Hook Manager
+
+The hook manager provides access to model internals such as neuron activations, layer outputs, and attention maps. It can also perform interventions such as ablating register neurons or applying functions to layer outputs.
+
+#### Usage
+```
+# Declare the hook manager
+hook_manager = HookManager(model)
+
+# Reinitialize logged values and hooks
+hook_manager.reinit(mode = HookMode.ANALYSIS)
+
+# Add any intervention hooks
+hook_manager.intervene_register_neurons(...)
+
+# Finalize hooks - this step actually registers all the hooks in the model
+hook_manager.finalize()
+
+# Call the model
+run_model(...)
+
+# Access model internals
+hook_manager.get_neuron_activations(), etc.
+```
+
+#### Main methods
+
+For a full list of methods, check out `shared/hook_manager.py`.
+
+##### `reinit(mode: HookType)`
+Resets saved model internals and removes previous hooks. The `mode` parameter controls which model internals are logged:
+
+- `HookMode.ANALYSIS`: Logs comprehensive model internals including:
+  - Neuron activations
+  - Layer outputs
+  - Attention maps (both pre and post-softmax)
+- `HookMode.INTERVENE`: No logging - only registers intervention hooks if specified
+
+Note: More hooks = slower forward passes.
+
+##### `intervene_register_neurons(num_registers: int, neurons_to_ablate: dict, scale: float = 1.0, normal_values: str = "zero")`
+Registers an intervention on specified neurons. Parameters:
+
+- `num_registers`: Number of registers used by the model
+- `neurons_to_ablate`: Dictionary mapping layers to lists of neurons
+- `scale`: Multiplier for max activation on test-time register (default: 1.0)
+- `normal_values`: Strategy for modifying image patches:
+  - `"zero"`: Set to zero
+  - `"mean"`: Set to mean activation
+  - `"only_outliers"`: Only modify outlier activations
+  - `"same"`: Keep original values
+
+##### `finalize()`
+Registers all intervention and logging hooks. Log hooks are registered after interventions, so logged internals will reflect any changes made by interventions.
