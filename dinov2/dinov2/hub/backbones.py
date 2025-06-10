@@ -7,9 +7,11 @@ from enum import Enum
 from typing import Union
 
 import torch
+from functools import partial
 
 from .utils import _DINOV2_BASE_URL, _make_dinov2_model_name
-
+from .hook_fn import activate_on_registers
+from .register_neurons import LARGE_REGISTER_NEURONS
 
 class Weights(Enum):
     LVD142M = "LVD142M"
@@ -81,6 +83,19 @@ def dinov2_vitl14(*, pretrained: bool = True, weights: Union[Weights, str] = Wei
     """
     return _make_dinov2_model(arch_name="vit_large", pretrained=pretrained, weights=weights, **kwargs)
 
+def dinov2_vitl14_tt_reg(*, pretrained: bool = True, weights: Union[Weights, str] = Weights.LVD142M, **kwargs):
+    """
+    DINOv2 ViT-L/14 model with test-time registers (optionally) pretrained on the LVD-142M dataset.
+    """
+    backbone_model = _make_dinov2_model(arch_name="vit_large", pretrained=pretrained, weights=weights, num_register_tokens=4, interpolate_antialias=True, interpolate_offset=0.0, **kwargs)
+    backbone_model.num_register_tokens = 1
+
+    neurons_to_ablate = LARGE_REGISTER_NEURONS
+    for layer in neurons_to_ablate:
+        neurons = neurons_to_ablate[layer]
+        backbone_model.blocks[layer].mlp.act.register_forward_hook(partial(activate_on_registers, patch_size=backbone_model.patch_size, neuron_indices=neurons))
+
+    return backbone_model
 
 def dinov2_vitg14(*, pretrained: bool = True, weights: Union[Weights, str] = Weights.LVD142M, **kwargs):
     """
