@@ -44,7 +44,7 @@ def load_dinov2_state(config):
   backbone_arch = backbone_size
   backbone_name = f"dinov2_{backbone_arch}"
 
-  backbone_model = torch.hub.load(repo_or_dir="dinov2/", model=backbone_name, source="local") # ensure that the repo path points to the `dinov2` directory in repo
+  backbone_model = torch.hub.load(repo_or_dir="./", model=backbone_name, source="local") # ensure that the repo path points to the `dinov2` directory in repo
   backbone_model.eval()
   backbone_model.cuda()
 

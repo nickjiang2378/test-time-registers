@@ -87,13 +87,13 @@ def dinov2_vitl14_tt_reg(*, pretrained: bool = True, weights: Union[Weights, str
     """
     DINOv2 ViT-L/14 model with test-time registers (optionally) pretrained on the LVD-142M dataset.
     """
-    backbone_model = _make_dinov2_model(arch_name="vit_large", pretrained=pretrained, weights=weights, num_register_tokens=4, interpolate_antialias=True, interpolate_offset=0.0, **kwargs)
+    backbone_model = _make_dinov2_model(arch_name="vit_large", pretrained=pretrained, weights=weights, **kwargs)
     backbone_model.num_register_tokens = 1
 
     neurons_to_ablate = LARGE_REGISTER_NEURONS
     for layer in neurons_to_ablate:
         neurons = neurons_to_ablate[layer]
-        backbone_model.blocks[layer].mlp.act.register_forward_hook(partial(activate_on_registers, patch_size=backbone_model.patch_size, neuron_indices=neurons))
+        backbone_model.blocks[layer].mlp.act.register_forward_hook(partial(activate_on_registers, model=backbone_model, neuron_indices=neurons))
 
     return backbone_model
 
