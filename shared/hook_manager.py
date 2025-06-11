@@ -38,9 +38,6 @@ class HookManager(ABC):
       "neuron_activations": [],
     }
 
-  def attn_output_component(self, layer):
-    raise NotImplementedError("This method should be overridden in a subclass")
-
   def attn_post_softmax_component(self, layer):
     raise NotImplementedError("This method should be overridden in a subclass")
 
@@ -59,6 +56,12 @@ class HookManager(ABC):
   def attn_pre_softmax_component(self, layer):
     return None
 
+  """
+  Optional: override this method to get / intervene upon attention outputs
+  """
+  def attn_output_component(self, layer):
+    return None
+
   def initialize_log_hooks(self):
     for layer in range(self.num_layers()):
       # Attention maps
@@ -66,8 +69,9 @@ class HookManager(ABC):
       self.hooks["log_attention_maps"].append(log_attention_hook)
 
       # Attention outputs
-      log_attention_output_hook = self.attn_output_component(layer).register_forward_hook(partial(log_internal, store = self.logs["attention_outputs"]))
-      self.hooks["log_attention_outputs"].append(log_attention_output_hook)
+      if self.attn_output_component(layer) is not None:
+        log_attention_output_hook = self.attn_output_component(layer).register_forward_hook(partial(log_internal, store = self.logs["attention_outputs"]))
+        self.hooks["log_attention_outputs"].append(log_attention_output_hook)
 
       # Layer outputs
       log_layer_output_hook = self.layer_output_component(layer).register_forward_hook(partial(log_internal, store = self.logs["layer_outputs"]))

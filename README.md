@@ -9,6 +9,9 @@
 **Controlling high-norm tokens in Vision Transformers.** As shown in [Darcet et al. (2024)](https://arxiv.org/abs/2309.16588), high-norm outlier tokens emerge in ViTs and lead to noisy attention maps (“Original”). By identifying the mechanism responsible for their emergence, we demonstrate that we can shift them to arbitrary positions at test time (“Shifted”). Shifting the outlier tokens outside of the image area mimics register behavior at test-time (“w/ Test-time Register”), resulting in more interpretable attention patterns and downstream performance comparable to models retrained with registers.
 
 ## Ready-to-Use Models with Test-Time Registers 🤗
+
+**Please consider starring ⭐ if you find this repository useful.**
+
 We provide OpenCLIP models on HuggingFace that include precomputed register neurons and test-time registers. Please visit the links below and take a look `openclip_example.ipynb` for example usage. These models can be further fine-tuned or used for other downstream applications. VLMs soon to come!
 <table style="margin: auto">
   <thead>
@@ -179,7 +182,7 @@ Test-time registers and register neurons are native to the OpenCLIP HuggingFace 
 - [ ] Add interactive VLM notebook example.
 
 ## Citation
-If you found this repository useful please consider starring ⭐ and citing:
+Please cite our paper as:
 ```
 @inproceedings{jiangvision,
   title={Vision Transformers Don't Need Trained Registers},
