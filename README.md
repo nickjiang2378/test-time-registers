@@ -45,7 +45,7 @@ We provide OpenCLIP models on HuggingFace that include precomputed register neur
 To access DINOv2 with test-time registers on its own, load the model directly from PyTorch Hub. See an example in `dinov2_example.ipynb`.
 ```
 import torch
-model = torch.hub.load("nickjiang2378/test-time-registers/", model = "dinov2_vitl14_tt_reg")
+model = torch.hub.load("nickjiang2378/test-time-registers", model = "dinov2_vitl14_tt_reg")
 ```
 
 ## Repo Setup
