@@ -1,6 +1,6 @@
 # Vision Transformers Don't Need <em>Trained</em> Registers
 
-[Nick Jiang](https://nickjiang.me)\*, [Amil Dravid](https://avdravid.github.io/)\*, [Alexei Efros](https://people.eecs.berkeley.edu/~efros/), [Yossi Gandelsman](https://yossigandelsman.github.io/)
+[Nick Jiang](https://nickjiang.me)\*, [Amil Dravid](https://avdravid.github.io/)\*, [Alexei A. Efros](https://people.eecs.berkeley.edu/~efros/), [Yossi Gandelsman](https://yossigandelsman.github.io/)
 
 [Paper](https://arxiv.org/abs/2506.08010) | [Project Page](https://avdravid.github.io/test-time-registers/)
 
