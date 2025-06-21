@@ -46,7 +46,6 @@ def find_register_neurons(
     if len(register_locations) == 0:
       continue
 
-    image_count += 1
     for layer in range(num_layers):
         act_layer = baseline_neuron_acts[layer]  # [seq_len, num_neurons]
         register_values = torch.abs(act_layer[register_locations])  # [num_register_locations, num_neurons]
@@ -62,6 +61,7 @@ def find_register_neurons(
         else:
             # Store mean activation at register locations
             neuron_scores[image_count, layer] = register_values.mean(dim=0)
+    image_count += 1
 
   assert image_count > 0, "No images processed: either lower the register norm threshold or increase the number of processed images"
 
