@@ -36,7 +36,7 @@ We provide OpenCLIP models on HuggingFace that include precomputed register neur
     <tr>
       <td>LLaVA Llama-3 8B with test-time register</td>
       <td style="text-align: center">
-        Avail. next week
+        <a href="https://huggingface.co/amildravid4292/llava-llama-3-8b-test-time-registers">Link</a>
       </td>
     </tr>
   </tbody>
