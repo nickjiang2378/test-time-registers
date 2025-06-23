@@ -176,6 +176,8 @@ Test-time registers and register neurons are native to the OpenCLIP HuggingFace 
 
 **LOST Unsupervised Object Discovery (Table 5):** We use the official [LOST repo](https://github.com/valeoai/LOST). We sweep over the last four layers of both OpenCLIP and DINOv2. For OpenCLIP, we use the value projection features, and for DINOv2, we the use the key features. We find that normalizing the features before LOST computation can improve results for all methods. Finally, following [Darcet et al. (2024)](https://arxiv.org/abs/2309.16588), we sweep over a manual bias term for the affinity matrix. For normalized features, sweep over [-1, 0].
 
+**VLM Evaluation (Table 6):** We use [VLMEvalKit](https://github.com/open-compass/VLMEvalKit) for evaluation using the main eight benchmarks from [here](https://huggingface.co/spaces/opencompass/open_vlm_leaderboard).
+
 
 ## Citation
 Please cite our paper as:
