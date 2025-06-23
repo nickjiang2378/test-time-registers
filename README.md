@@ -12,7 +12,7 @@
 
 **Please consider starring ⭐ if you find this repository useful.**
 
-We provide OpenCLIP models and LLaVA Llama-3 8B on HuggingFace that include precomputed register neurons and test-time registers. Please visit the links below and take a look `openclip_example.ipynb` and `llava_demo` for example usage. Note that LLaVa will need transformers==4.37.0. These models can be further fine-tuned or used for other downstream applications. 
+We provide OpenCLIP models and LLaVA Llama-3 8B on HuggingFace that include precomputed register neurons and test-time registers. Please visit the links below and take a look `openclip_example.ipynb` and `llava_demo.ipynb` for example usage. Note that LLaVa will need transformers==4.37.0. These models can be further fine-tuned or used for other downstream applications. 
 <table style="margin: auto">
   <thead>
     <tr>
