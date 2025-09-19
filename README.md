@@ -1,4 +1,4 @@
-# Vision Transformers Don't Need <em>Trained</em> Registers
+# Vision Transformers Don't Need <em>Trained</em> Registers (NeurIPS 2025 Spotlight)
 
 [Nick Jiang](https://nickjiang.me)\*, [Amil Dravid](https://avdravid.github.io/)\*, [Alexei A. Efros](https://people.eecs.berkeley.edu/~efros/), [Yossi Gandelsman](https://yossigandelsman.github.io/)
 
